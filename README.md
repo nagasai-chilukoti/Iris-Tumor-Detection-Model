@@ -25,8 +25,8 @@ The data is categorized into two groups:
 * **Tumor Present**
 
 Dataset access:
-📂 [Google Drive – Iris Tumor Dataset]([https://drive.google.com/drive/folders/1Tzc9ym41ni1K9g9zDck3tRQ7i5MaWDoS?usp=drive_link](https://drive.google.com/drive/folders/1JN3-8iQMFWO4FpGDQTa3QQLRhAoxVusJ?q=sharedwith:public%20parent:1JN3-8iQMFWO4FpGDQTa3QQLRhAoxVusJ))
-
+📂
+🔗 [Dataset-access]([http://milesresearch.com/main/links.htm](https://drive.google.com/drive/folders/1JN3-8iQMFWO4FpGDQTa3QQLRhAoxVusJ))
 ---
 
 ### **Tech Stack**
