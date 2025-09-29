@@ -1,8 +1,3 @@
-🌐 **Project Website:**
-[https://nagasai-chilukoti-iris-tumor-detection.streamlit.app](https://nagasai-chilukoti-iris-tumor-detection.streamlit.app)https://iris-tumors-detector.streamlit.app/
-This model is deployed using **Streamlit**, an open-source deployment framework widely used for interactive data apps. The application runs on Streamlit Cloud and provides a clean, intuitive interface for healthcare researchers and professionals. Users can upload an iris image, and the system processes it to determine whether a tumor is present. The interface includes image previews, probability breakdowns, and clear predictions for quick interpretation.
-
----
 
 ### **About the Project**
 
