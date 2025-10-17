@@ -1,8 +1,6 @@
 
 ---
 
-### ✅ Polished Version of Your Current README (with small improvements)
-
 ```markdown
 # Iris Tumor Detection using ResNet18 🧠🔬
 
