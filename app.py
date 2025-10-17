@@ -2,9 +2,14 @@ import streamlit as st
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
-import numpy as np
 from PIL import Image
 from torchvision import models
+import matplotlib.pyplot as plt
+
+# ----------------------------
+# Streamlit Page Setup (MUST BE FIRST)
+# ----------------------------
+st.set_page_config(page_title="Iris Tumor Detection", layout="centered")
 
 # ----------------------------
 # Custom CSS Styling
@@ -39,7 +44,9 @@ st.markdown("""
 class ResNetIrisTumor(nn.Module):
     def __init__(self, num_classes=2, dropout_rate=0.5):
         super(ResNetIrisTumor, self).__init__()
-        self.resnet = models.resnet18(pretrained=False)  # Load your fine-tuned weights
+        self.resnet = models.resnet18(pretrained=True)
+        for param in self.resnet.parameters():
+            param.requires_grad = False
         self.resnet.fc = nn.Sequential(
             nn.Dropout(dropout_rate),
             nn.Linear(self.resnet.fc.in_features, num_classes)
@@ -54,7 +61,6 @@ class ResNetIrisTumor(nn.Module):
 @st.cache_resource
 def load_model():
     model = ResNetIrisTumor()
-    # Load the finetuned model
     model.load_state_dict(torch.load("iris_tumor_model.pth", map_location=torch.device('cpu')))
     model.eval()
     return model
@@ -78,7 +84,6 @@ def preprocess_image(uploaded_file):
 # ----------------------------
 # Streamlit UI
 # ----------------------------
-st.set_page_config(page_title="Iris Tumor Detection", layout="centered")
 st.title("🔬 Iris Tumor Detection App")
 st.write("""
 Upload an eye image, and our AI model will predict whether a tumor is present. 
@@ -112,8 +117,8 @@ if uploaded_file is not None:
         with torch.no_grad():
             output = model(input_tensor)
             _, prediction = torch.max(output, 1)
-            probs = torch.softmax(output, dim=1)[0]
-            tumor_prob = probs[1].item()
+            probs = torch.softmax(output, dim=1)[0].numpy()
+            tumor_prob = probs[1]
 
         label = "Tumor Detected" if prediction.item() == 1 else "No Tumor"
         confidence = tumor_prob if prediction.item() == 1 else 1 - tumor_prob
@@ -123,16 +128,21 @@ if uploaded_file is not None:
         else:
             st.success(f"✅ {label} ({confidence:.2%} confidence)")
 
+        # Probability Bar Chart
         st.write("### 📊 Probability Breakdown")
-        st.progress(tumor_prob)
-        st.write(f"Tumor Probability: **{tumor_prob:.2%}**")
+        fig, ax = plt.subplots()
+        classes = ["No Tumor", "Tumor"]
+        ax.bar(classes, probs, color=["#4CAF50", "#FF5252"])
+        ax.set_ylim([0, 1])
+        ax.set_ylabel("Confidence")
+        st.pyplot(fig)
 
 # Sidebar info
 st.sidebar.subheader("ℹ️ About This Model")
 st.sidebar.write("""
 This model uses **ResNet18 (CNN)** trained on iris images to detect tumors.
-Developed by **nagasai chilukoti**.
+Developed by **Naga Sai Chilukoti**.
 """)
 
 st.sidebar.subheader("📩 Contact")
-st.sidebar.write("📧 Email: **nagasaichilukoti71@gmail.com**")
+st.sidebar.write("📧 Email: nagasaichilukoti71@gmail.com")
